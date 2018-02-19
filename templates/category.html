@@ -1,0 +1,110 @@
+{% extends "template.html" %}
+{% block content %}
+
+<script type="text/javascript">
+        function getCategory(catId) {
+            //alert("Hi" + catId);
+            $.ajax(
+                    {
+                        type: 'POST',
+                        url: '/getCategory/' + catId,
+                        contentType: 'application/octet-stream; charset=utf-8',
+                        data: "{}",
+                        dataType: "json",
+                        success: function(result)
+                        {
+                            if(result)
+                            {
+                                var strHTML;
+                                //console.log(result);
+                                //var result = $.parseJSON(result);
+                                //alert("result" + result.items.length);
+                                subCat = $("#subcategory");
+                                subCat.empty();
+                                subCat.append("<span><b>Latest Items</b></span><br>");
+                                for (var i = 0; i < result.items.length; i++) {
+                                    //alert("result " + result.items[i].ItemName)
+                                    subCat.append("<a href='/ItemCatlog/" + result.items[i].id + "/displayItemDetail/'>" + result.items[i].ItemName + "</a><br>");
+                                    }
+                            }
+                           
+                        }
+
+                });
+        }
+    </script>
+
+    
+        
+    <div class="container" style="background-color: white;margin-top: 10px;padding-top: 10px; ">
+        <div class="row">
+            <div class="col-md-12">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                    <li><strong>{{ message }}</strong></li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12"  align="right">{{username}}
+            <input type="button" class="btn btn-warning btn-sm" style=""  value="Logout"  onclick="window.location.href='{{ url_for( 'logout') }}';"  name="Logout">
+        </div>    
+        </div>
+        
+        <div class="row" style="font-size: large;">
+            <div class="col-md-6">
+               
+            </div>
+            <div  class="col-md-6" >
+                      
+            </div>
+        </div>
+        <div class="row vdivide">
+            <div class="col-md-6 ">
+                 <span><b>Categories</b></span>
+                {% if not i %}
+                
+                {% for i in category %}
+                <div style="padding-top: 5px;">
+                <!--<a href="/ItemCatlog/{{i.id}}/displayItem">{{i.catName}}</a> -->
+                <a href="#" onclick="getCategory({{i.id}})">{{ i.catName }}</a>                    
+                </div>
+                {% endfor %}
+                
+                {% else %}
+                <div>No records to display Create new category</div>
+                {% endif %}
+            </div>
+            <div id="subcategory" class="col-md-6" >
+                <span><b>Latest Items</b></span>  
+                {% for i in items %}
+                <div style="padding-top: 5px">
+                    <a href='/ItemCatlog/{{i.id}}/displayItemDetail/'>{{i.itemName}}</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col-md-6">
+                <a href='{{url_for('newCategory')}}' style="color:orange">Create new Category</a>
+            </div>
+
+        
+            <div id="subcategory" class="col-md-6" >
+                <a href="/ItemCatlog/addItem/" style="color:orange">add Item</a>
+            </div>
+
+        </div>
+   </div>
+   {% endblock %}
+
+
+            
+
+            
+            

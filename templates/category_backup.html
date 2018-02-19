@@ -1,0 +1,119 @@
+<html>
+	<head>
+       <meta charset="utf-8">
+ 	<meta name="viewport" content="width=device-width,initial-scale=1">
+ 	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.2.1.min.js')}}"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.13.0/esm/popper-utils.js">
+ 	<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js')}}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css')}}">
+	<link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic" rel="stylesheet">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}">
+	<link rel="stylesheet" href="http://weloveiconfonts.com/api/?family=zocial"/>
+
+        <title></title>
+	</head>
+<body style="background-color: lightgray;">
+    <script type="text/javascript">
+        function getCategory(catId) {
+            //alert("Hi" + catId);
+            $.ajax(
+                    {
+                        type: 'POST',
+                        url: '/getCategory/' + catId,
+                        contentType: 'application/octet-stream; charset=utf-8',
+                        data: "{}",
+                        dataType: "json",
+                        success: function(result)
+                        {
+                            if(result)
+                            {
+                                var strHTML;
+                                //console.log(result);
+                                //var result = $.parseJSON(result);
+                                //alert("result" + result.items.length);
+                                subCat = $("#subcategory");
+                                subCat.empty();
+                                for (var i = 0; i < result.items.length; i++) {
+                                    //alert("result " + result.items[i].ItemName)
+                                    subCat.append("<a href='/ItemCatlog/" + result.items[i].id + "/displayItemDetail/'>" + result.items[i].ItemName + "</a><br>");
+                                    }
+                            }
+                           
+                        }
+
+                });
+        }
+    </script>
+        <div class="row" style="background-color: navy;">
+            <div class="col-md-2 " ></div>
+            <div class="col-md-7 text-left ">
+                <h2 class="title-super text-thin " style="color:white;">Catalog App</h2>
+            </div>
+            <div class="col-md-3" style="margin-top: 15;">
+                <input type="button" class="btn btn-warning" style="" value="Logout"  onclick="window.location.href='{{ url_for( 'logout') }}';"  name="Logout">
+            </div>
+        </div>
+    <div class="container" style="background-color: white;margin-top: 15; ">
+        <div class="row">
+            <div class="col-md-12">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                    <li><strong>{{ message }}</strong></li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+        <div class="row" style="font-size: large;">
+            <div class="col-md-6">
+                <span><b>Categories</b></span>
+            </div>
+            <div  class="col-md-6" >
+                <span><b>Latest Items</b></span>         
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                {% if not i %}
+                
+                {% for i in category %}
+                <div style="padding-top: 3">
+                <!--<a href="/ItemCatlog/{{i.id}}/displayItem">{{i.catName}}</a> -->
+                <a onclick="getCategory({{i.id}})">{{ i.catName }}</a>                    
+                </div>
+                {% endfor %}
+                
+                {% else %}
+                <div>No records to display Create new category</div>
+                {% endif %}
+            </div>
+            <div id="subcategory" class="col-md-6" >
+                {% for i in items %}
+                <div style="padding-top: 3">
+                    <a href='/ItemCatlog/{{i.id}}/displayItemDetail/'>{{i.itemName}}</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col-md-6">
+                <a href='{{url_for('newCategory')}}' style="color:orange">Create new Category</a>
+            </div>
+
+        
+            <div id="subcategory" class="col-md-6" >
+                <a href="/ItemCatlog/addItem/" style="color:orange">add Item</a>
+            </div>
+
+        </div>
+   </div>
+
+            
+
+            
+            
+</body>
+</html>

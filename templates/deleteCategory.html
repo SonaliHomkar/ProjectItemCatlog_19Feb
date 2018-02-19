@@ -1,0 +1,45 @@
+{% extends "template.html" %}
+{% block content %}
+
+    <form method="post">
+        <div class="container" style="background-color: white;margin-top: 10px; padding-top: 10px;">
+            <div class="row">
+                <div class="col-md-12">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <ul>
+                        {% for message in messages %}
+                        <li><strong>{{ message }}</strong></li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endwith %}
+                 </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12"  align="right">
+                    <input type="button" class="btn btn-warning btn-sm" style=""  value="Logout"  onclick="window.location.href='{{ url_for( 'logout') }}';"  name="Logout">
+                </div>    
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class=" text-left" >Delete Category</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class=" text-left">Are you sure you want to delete category : {{ i.catName }}</h1>
+                </div>
+            </div>
+            <div class="row"  style="padding-bottom:10px;margin-top: 10px;">
+                <div class="col-md-3">
+                        <input type="submit" class="btn btn-primary btn-sm" value="Submit" />
+                </div>
+                <div  class="col-md-9" >
+                    <input type="button" class="btn btn-primary btn-sm" style=""  value="Cancel"  onclick="window.location.href='{{ url_for( 'showCategory') }}';"  name="Cancel">
+                </div>
+            </div>
+        <div>
+    </form>
+
+{% endblock %}
