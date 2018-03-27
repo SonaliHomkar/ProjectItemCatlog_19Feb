@@ -4,7 +4,7 @@ from sqlalchemy import Column,ForeignKey,Integer,String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
-
+from ItemCatlog_configPath import DBPATH
 Base = declarative_base()
 
 class User(Base):
@@ -55,7 +55,7 @@ class Item(Base):
             }
 
 
-engine = create_engine('sqlite:///ItemCatlog.db')
+engine = create_engine('sqlite:///' + DBPATH)
 
 Base.metadata.create_all(engine)
 

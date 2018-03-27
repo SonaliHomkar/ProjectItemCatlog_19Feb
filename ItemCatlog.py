@@ -6,6 +6,8 @@ import traceback
 import hmac
 import random
 import hashlib
+import os
+from ItemCatlog_configPath import DBPATH,CLIENT_FILE
 from string import ascii_letters, ascii_uppercase,  digits
 from database_setup import Base, Category, Item, User
 from sqlalchemy import create_engine
@@ -23,11 +25,12 @@ from flask import Flask, render_template,  request,  redirect,  url_for, flash
 from flask import jsonify
 app = Flask(__name__)
 
+
 CLIENT_ID = json.loads(
-    open('client_secrets.json', 'r').read())['web']['client_id']
+    open(CLIENT_FILE, 'r').read())['web']['client_id']
 
 # create session and connect to database #
-engine = create_engine('sqlite:///ItemCatlog.db')
+engine = create_engine('sqlite:///' + DBPATH)
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
